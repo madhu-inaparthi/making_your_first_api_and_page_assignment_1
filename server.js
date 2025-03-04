@@ -1,4 +1,5 @@
 // Boilerplate Code for Virtual Assistant API
+const { error } = require('console');
 const express = require('express');
 const app = express();
 
@@ -33,7 +34,30 @@ Example Responses:
 Add the required logic below to complete the API.
 */
 
+app.get('/assistant/greet', (req, res) => {
+    try{
+        const query = req.query;
+        if(!query.name){
+          res.status(400).send({message:"Please include a name in url as query"});
+        }
+        const day = new Date();
+        console.log(day.getDay());
+        const dayArray = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+       
+        console.log(query);
+        res.status(200).send(
+          
+        {
+          welcomeMessage: `Hello, ${query.name}! Welcome to our assistant app!`,
+          dayMessage:`Happy ${dayArray[day.getDay()]}! Start your week with energy!`
+        }
+        );
+    }catch(error){
+      res.status(500).send({message:"something went wrong",error:error});    
+    }
+})
+
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Virtual Assistant API is running on http://localhost:${PORT}`);
+    console.log('Virtual Assistant API is running on http://localhost:${PORT}');
 });
